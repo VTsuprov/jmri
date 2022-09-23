@@ -1,10 +1,11 @@
 # jmri - UNDER CONSTRUCTION
-Full access to the railroad model with NodeJS via JMRI JSON Servlet.
+Full access to the railroad model with NodeJS via JMRI JSON Servlet. Feedback is available through subscription to events.
 
 The JMRI JSON Services provide access to JMRI via JSON data objects via a RESTful interface via a socket interface over WebSockets.
 
 ## Prerequisites
-JMRI server run and connected to your DCC Command station
+JMRI server run and connected to your DCC Command station.
+To start getting events you have to call a get or a set function for the objects (sensor, throttle, turnout). 
 
 ## Installation
 
@@ -28,7 +29,7 @@ getTurnout('XT1');
 
 getSensor('XS509');
 
-### Example
+## Example
 ```js
 myModel.ee.on('hello', data => {
     console.log('hello event');
