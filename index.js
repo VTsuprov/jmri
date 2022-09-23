@@ -1,4 +1,5 @@
 const WebSocketClient = require('websocket').client;
+const EventEmitter = require("events");
 
 /*
 {type: 'turnout', method: 'post', data: {…}}
@@ -37,10 +38,13 @@ class Logger {
   }
 }
 
+class Emitter extends EventEmitter {}
+
 const JMRI = function (url, bindings) {
   console.log("создаю экземпляр JMRI");
   const log = new Logger();
   const websocket = new WebSocketClient();
+  this.ee = new Emitter();
   this.socket = null;
   this.ws_connect = () => {
     websocket.connect(this.url.replace(/^http/, "ws")/*, 'echo-protocol'*/);
@@ -108,7 +112,7 @@ const JMRI = function (url, bindings) {
           console.log(message);
         }
       });
-      websocket.test(connection);
+      //websocket.test(connection);
       function sendNumber() {
         if (connection.connected) {
           var number = Math.round(Math.random() * 0xFFFFFF);
@@ -176,7 +180,8 @@ const JMRI = function (url, bindings) {
   this.pong = function () {
   };
   this.hello = function (data) {
-    console.log('[i] railroad ' + data.railroad + ' is connected');
+
+    this.ee.emit('hello', data);
     this.heartbeatInterval = setInterval(this.heartbeat, data.heartbeat);
   };
   this.goodbye = function (data) {
@@ -261,8 +266,12 @@ const JMRI = function (url, bindings) {
   };
   this.sensor = function (data) {
     let state = 0;
-    if(+data.state) state = this.settings.sensor[+data.state];
-    console.log("[i] sensor " + data.name + ' state = ' + state);
+    if(+data.state) {
+      state = this.settings.sensor[+data.state];
+      data.state = state;
+    }
+
+    this.ee.emit('sensor', data);
   };
   this.sensors = function (data) {
   };
@@ -279,7 +288,10 @@ const JMRI = function (url, bindings) {
   this.systemConnections = function (data) {
   };
   this.throttle = function (data) {
-    if(data.speed !== undefined) console.log('throttle data for ' + data.name + ' speed: ' + data.speed);
+    if(data.speed !== undefined) {
+
+      this.ee.emit('throttle', data);
+    }
   };
   this.time = function (time, data) {
   };
@@ -289,8 +301,12 @@ const JMRI = function (url, bindings) {
   };
   this.turnout = function (data) {
     let state = 0;
-    if(+data.state) state = this.settings.turnout[+data.state];
-    console.log("[i] turnout " + data.name + ' state = ' + state);
+    if(+data.state) {
+      state = this.settings.turnout[+data.state];
+      data.state = state;
+    }
+
+    this.ee.emit('turnout', data);
   };
   this.turnouts = function (data) {
   };

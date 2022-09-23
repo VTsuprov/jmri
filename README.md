@@ -18,9 +18,43 @@ npm install jmri-cli
 
 ```js
 const JMRI = require('jmri-cli');
-
 let myModel = new JMRI("http://192.168.1.30:12080/json/");
 ```
 
 ### Methods
-To be described
+setThrottle({"name": "M62", "address": 5, "speed": 0.6}); 
+
+getTurnout('XT1');
+
+getSensor('XS509');
+
+### Example
+```js
+myModel.ee.on('hello', data => {
+    console.log('hello event');
+    console.log('[i] railroad ' + data.railroad + ' is connected');
+    test();
+})
+myModel.ee.on('sensor', data => {
+    console.log('sensor event');
+    console.log("[i] sensor " + data.name + ' state = ' + data.state);
+})
+myModel.ee.on('throttle', data => {
+    console.log('throttle event');
+    console.log('throttle data for ' + data.name + ' speed: ' + data.speed);
+})
+myModel.ee.on('turnout', data => {
+    console.log('turnout event');
+    console.log("[i] turnout " + data.name + ' state = ' + data.state);
+})
+
+const test = () => {
+    console.log('...running test init');
+    myModel.setThrottle({"name": "M62", "address": 5, "speed": 0.6});
+    myModel.getSensor('XS509');
+    myModel.getSensor('XS510');
+    myModel.getSensor('XS511');
+    myModel.getTurnout('XT1');
+    myModel.getTurnout('XT6');
+}
+```
