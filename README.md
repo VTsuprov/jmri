@@ -1,5 +1,7 @@
 # jmri - UNDER CONSTRUCTION
-Access to the railroad model with NodeJS through JMRI
+Full access to the railroad model with NodeJS via JMRI JSON Servlet.
+
+The JMRI JSON Services provide access to JMRI via JSON data objects via a RESTful interface via a socket interface over WebSockets.
 
 ## Prerequisites
 JMRI server run and connected to your DCC Command station
@@ -7,7 +9,7 @@ JMRI server run and connected to your DCC Command station
 ## Installation
 
 ```sh
-NOT YET!!! npm install jmri
+npm install jmri-cli
 ```
 
 ## API
@@ -15,7 +17,7 @@ NOT YET!!! npm install jmri
 ### Initialize
 
 ```js
-const JMRI = require('jmri');
+const JMRI = require('jmri-cli');
 
 let myModel = new JMRI("http://192.168.1.30:12080/json/");
 ```
