@@ -1,4 +1,4 @@
-# jmri - UNDER CONSTRUCTION
+# JMRI - websocket - NodeJS
 Full access to the railroad model with NodeJS via JMRI JSON Servlet. Feedback is available through subscription to events.
 
 The JMRI JSON Services provide access to JMRI via JSON data objects via a RESTful interface via a socket interface over WebSockets.

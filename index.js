@@ -826,19 +826,11 @@ const JMRI = function (url, bindings) {
     }
   };
   this.setTurnout = function (name, state) {
-    if (this.socket) {
-      this.socket.send("turnout", { name: name, state: state }, 'post');
+    if (websocket) {
+      websocket.send("turnout", { name: name, state: state }, 'post');
+      return true;
     } else {
-      $.ajax({
-        url: this.url + "turnout/" + name,
-        type: "POST",
-        data: JSON.stringify({ state: state }),
-        contentType: "application/json; charset=utf-8",
-        success: function (json) {
-          this.turnout(json.data.name, json.data.state, json.data);
-          this.getTurnout(json.data.name, json.data.state);
-        }
-      });
+      return false;
     }
   };
   /**
